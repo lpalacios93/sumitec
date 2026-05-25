@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Stock | SUMITEC{% endblock %}
+
+{% block content %}
+<section class="page-heading">
+    <div>
+        <p>Stock por bodega</p>
+        <h1>{{ product.code }}</h1>
+        <span class="muted-text">{{ product.description }}</span>
+    </div>
+    <a class="secondary-link-button" href="{% url 'catalog:products' %}">Volver</a>
+</section>
+
+<section class="form-panel">
+    <form method="post" class="form-grid" novalidate>
+        {% csrf_token %}
+        {% for field in form %}
+            <label>
+                {{ field.label }}
+                {{ field }}
+                {{ field.errors }}
+            </label>
+        {% empty %}
+            <p class="muted-text span-2">No hay bodegas activas. Crea una bodega antes de actualizar stock.</p>
+        {% endfor %}
+        <div class="form-actions span-2">
+            <button type="submit" class="primary-button">Guardar stock</button>
+            <a class="secondary-link-button" href="{% url 'catalog:products' %}">Cancelar</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

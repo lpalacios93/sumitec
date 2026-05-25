@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}Productos | SUMITEC{% endblock %}
+
+{% block content %}
+<section class="page-heading">
+    <div>
+        <p>Catalogo</p>
+        <h1>Productos</h1>
+    </div>
+    {% if is_admin %}
+        <div class="button-row">
+            <a class="secondary-link-button" href="{% url 'catalog:categories' %}">Categorias</a>
+            <a class="secondary-link-button" href="{% url 'catalog:brands' %}">Marcas</a>
+            <a class="secondary-link-button" href="{% url 'catalog:suppliers' %}">Proveedores</a>
+            <a class="secondary-link-button" href="{% url 'catalog:warehouses' %}">Bodegas</a>
+            <a class="primary-link-button" href="{% url 'catalog:product_create' %}">Crear producto</a>
+        </div>
+    {% endif %}
+</section>
+
+<section class="toolbar">
+    <form method="get" class="search-form">
+        <input type="search" name="q" value="{{ query }}" placeholder="Buscar por codigo, descripcion, marca, modelo o categoria">
+        <button type="submit">Buscar</button>
+        {% if query %}
+            <a href="{% url 'catalog:products' %}">Limpiar</a>
+        {% endif %}
+    </form>
+</section>
+
+<section class="table-panel">
+    <div class="table-scroll">
+        <table class="data-table product-table">
+            <thead>
+                <tr>
+                    <th>Codigo</th>
+                    <th>Descripcion</th>
+                    <th>Marca / Modelo</th>
+                    <th>Categoria</th>
+                    {% if is_admin %}<th>Costo</th>{% endif %}
+                    <th>Precio venta</th>
+                    <th>IVA</th>
+                    <th>Stock</th>
+                    <th>Estado</th>
+                    {% if is_admin %}<th></th>{% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                    <tr>
+                        <td>
+                            <strong>{{ product.code }}</strong>
+                            {% if product.barcode %}<small>{{ product.barcode }}</small>{% endif %}
+                        </td>
+                        <td>
+                            {{ product.description }}
+                            {% if product.warranty %}<small>Garantia: {{ product.warranty }}</small>{% endif %}
+                        </td>
+                        <td>{{ product.brand|default:"-" }}{% if product.model %}<small>{{ product.model }}</small>{% endif %}</td>
+                        <td>{{ product.category }}</td>
+                        {% if is_admin %}<td>C$ {{ product.cost_price }}</td>{% endif %}
+                        <td>C$ {{ product.sale_price }}</td>
+                        <td>{% if product.applies_iva %}Si{% else %}No{% endif %}</td>
+                        <td>{{ product.stock_total_value|default:"0" }}</td>
+                        <td>{% if product.is_active %}Activo{% else %}Inactivo{% endif %}</td>
+                        {% if is_admin %}
+                            <td class="row-actions">
+                                <a href="{% url 'catalog:product_update' product.pk %}">Editar</a>
+                                <a href="{% url 'catalog:product_stock' product.pk %}">Stock</a>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="{% if is_admin %}10{% else %}8{% endif %}" class="empty-state">No hay productos registrados.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if is_paginated %}
+        <nav class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">Anterior</a>
+            {% endif %}
+            <span>Pagina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}">Siguiente</a>
+            {% endif %}
+        </nav>
+    {% endif %}
+</section>
+{% endblock %}

@@ -239,6 +239,13 @@ input {
     background: var(--primary);
 }
 
+.button-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
 .secondary-link-button {
     color: var(--primary);
     background: #fff;
@@ -313,6 +320,22 @@ input {
 .data-table td small {
     display: block;
     margin-top: 4px;
+    color: var(--muted);
+}
+
+.row-actions {
+    white-space: nowrap;
+}
+
+.row-actions a + a {
+    margin-left: 10px;
+}
+
+.product-table {
+    min-width: 1080px;
+}
+
+.muted-text {
     color: var(--muted);
 }
 
@@ -424,7 +447,8 @@ input {
     }
 
     .search-form,
-    .form-actions {
+    .form-actions,
+    .button-row {
         align-items: stretch;
         flex-direction: column;
     }
