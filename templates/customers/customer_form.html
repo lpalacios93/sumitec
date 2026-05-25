@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}{% if object %}Editar cliente{% else %}Crear cliente{% endif %} | SUMITEC{% endblock %}
+
+{% block content %}
+<section class="page-heading">
+    <div>
+        <p>Clientes</p>
+        <h1>{% if object %}Editar cliente{% else %}Crear cliente{% endif %}</h1>
+    </div>
+    <a class="secondary-link-button" href="{% url 'customers:list' %}">Volver</a>
+</section>
+
+<section class="form-panel">
+    <form method="post" class="form-grid" novalidate>
+        {% csrf_token %}
+        {% for field in form %}
+            <label class="{% if field.name == 'address' or field.name == 'notes' %}span-2{% endif %}">
+                {{ field.label }}
+                {{ field }}
+                {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
+                {{ field.errors }}
+            </label>
+        {% endfor %}
+
+        <div class="form-actions span-2">
+            <button type="submit" class="primary-button">Guardar cliente</button>
+            <a class="secondary-link-button" href="{% url 'customers:list' %}">Cancelar</a>
+        </div>
+    </form>
+</section>
+{% endblock %}
