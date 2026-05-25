@@ -6,6 +6,7 @@ from . import views
 app_name = "catalog"
 
 urlpatterns = [
+    path("selector/<str:kind>/", views.CatalogPickerView.as_view(), name="picker"),
     path("productos/", views.ProductListView.as_view(), name="products"),
     path("productos/nuevo/", views.ProductCreateView.as_view(), name="product_create"),
     path("productos/<int:pk>/editar/", views.ProductUpdateView.as_view(), name="product_update"),

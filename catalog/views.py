@@ -1,6 +1,8 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import IntegrityError
 from django.db.models import Q, Sum
+from django.db.models.deletion import ProtectedError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views import View
@@ -17,6 +19,34 @@ from .forms import (
     WarehouseForm,
 )
 from .models import Brand, Category, Product, Supplier, Warehouse
+
+
+PICKER_CONFIG = {
+    "categorias": {
+        "model": Category,
+        "form": CategoryForm,
+        "title": "Categorias",
+        "field_id": "id_category",
+    },
+    "marcas": {
+        "model": Brand,
+        "form": BrandForm,
+        "title": "Marcas",
+        "field_id": "id_brand",
+    },
+    "proveedores": {
+        "model": Supplier,
+        "form": SupplierForm,
+        "title": "Proveedores",
+        "field_id": "id_supplier",
+    },
+    "bodegas": {
+        "model": Warehouse,
+        "form": WarehouseForm,
+        "title": "Bodegas",
+        "field_id": "",
+    },
+}
 
 
 def user_is_admin(user):
@@ -94,6 +124,76 @@ class ProductStockUpdateView(AdminRequiredMixin, View):
             return redirect("catalog:products")
         return render(request, self.template_name, {"product": product, "form": form})
 
+
+class CatalogPickerView(AdminRequiredMixin, View):
+    template_name = "catalog/picker.html"
+
+    def dispatch(self, request, kind, *args, **kwargs):
+        self.config = PICKER_CONFIG[kind]
+        self.kind = kind
+        return super().dispatch(request, kind, *args, **kwargs)
+
+    def get(self, request, kind):
+        return self.render_picker()
+
+    def post(self, request, kind):
+        action = request.POST.get("action")
+        model = self.config["model"]
+        form_class = self.config["form"]
+
+        if action == "delete":
+            item = get_object_or_404(model, pk=request.POST.get("item_id"))
+            try:
+                item.delete()
+                messages.success(request, "Registro eliminado correctamente.")
+            except (ProtectedError, IntegrityError):
+                messages.error(
+                    request,
+                    "No se puede eliminar porque ya esta siendo usado.",
+                )
+            return redirect(request.path)
+
+        instance = None
+        if action == "update":
+            instance = get_object_or_404(model, pk=request.POST.get("item_id"))
+
+        form = form_class(request.POST, instance=instance)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Registro guardado correctamente.")
+            return redirect(request.path)
+
+        return self.render_picker(form=form)
+
+    def render_picker(self, form=None):
+        model = self.config["model"]
+        form_class = self.config["form"]
+        query = self.request.GET.get("q", "").strip()
+        edit_id = self.request.GET.get("edit")
+        edit_object = None
+        if edit_id:
+            edit_object = get_object_or_404(model, pk=edit_id)
+
+        queryset = model.objects.order_by("name")
+        if query:
+            queryset = queryset.filter(name__icontains=query)
+
+        if form is None:
+            form = form_class(instance=edit_object)
+
+        return render(
+            self.request,
+            self.template_name,
+            {
+                "kind": self.kind,
+                "title": self.config["title"],
+                "field_id": self.request.GET.get("field_id") or self.config["field_id"],
+                "items": queryset,
+                "query": query,
+                "form": form,
+                "edit_object": edit_object,
+            },
+        )
 
 class SimpleAdminListView(AdminRequiredMixin, ListView):
     template_name = "catalog/simple_list.html"

@@ -15,7 +15,6 @@
     <form method="post" enctype="multipart/form-data" class="form-grid" novalidate>
         {% csrf_token %}
 
-        <h2 class="form-section-title span-2">Datos del producto</h2>
         <label>
             {{ form.code.label }}
             {{ form.code }}
@@ -31,9 +30,13 @@
             {{ form.description }}
             {{ form.description.errors }}
         </label>
+
         <label>
             {{ form.brand.label }}
-            {{ form.brand }}
+            <span class="select-with-action">
+                {{ form.brand }}
+                <button type="button" data-picker-url="{% url 'catalog:picker' 'marcas' %}?field_id=id_brand">Elegir</button>
+            </span>
             {{ form.brand.errors }}
         </label>
         <label>
@@ -43,14 +46,21 @@
         </label>
         <label>
             {{ form.category.label }}
-            {{ form.category }}
+            <span class="select-with-action">
+                {{ form.category }}
+                <button type="button" data-picker-url="{% url 'catalog:picker' 'categorias' %}?field_id=id_category">Elegir</button>
+            </span>
             {{ form.category.errors }}
         </label>
         <label>
             {{ form.supplier.label }}
-            {{ form.supplier }}
+            <span class="select-with-action">
+                {{ form.supplier }}
+                <button type="button" data-picker-url="{% url 'catalog:picker' 'proveedores' %}?field_id=id_supplier">Elegir</button>
+            </span>
             {{ form.supplier.errors }}
         </label>
+
         <label>
             {{ form.cost_price.label }}
             {{ form.cost_price }}
@@ -87,36 +97,10 @@
             {{ form.notes.errors }}
         </label>
 
-        <h2 class="form-section-title span-2">Crear datos auxiliares sin salir</h2>
-        <label>
-            {{ form.new_category_name.label }}
-            {{ form.new_category_name }}
-            <small>{{ form.new_category_name.help_text }}</small>
-            {{ form.new_category_name.errors }}
-        </label>
-        <label>
-            {{ form.new_brand_name.label }}
-            {{ form.new_brand_name }}
-            <small>{{ form.new_brand_name.help_text }}</small>
-            {{ form.new_brand_name.errors }}
-        </label>
-        <label>
-            {{ form.new_supplier_name.label }}
-            {{ form.new_supplier_name }}
-            <small>{{ form.new_supplier_name.help_text }}</small>
-            {{ form.new_supplier_name.errors }}
-        </label>
-        <label>
-            {{ form.new_warehouse_name.label }}
-            {{ form.new_warehouse_name }}
-            <small>{{ form.new_warehouse_name.help_text }}</small>
-            {{ form.new_warehouse_name.errors }}
-        </label>
-        <label class="span-2">
-            {{ form.new_warehouse_location.label }}
-            {{ form.new_warehouse_location }}
-            {{ form.new_warehouse_location.errors }}
-        </label>
+        <div class="inline-management span-2">
+            <span>Bodegas</span>
+            <button type="button" data-picker-url="{% url 'catalog:picker' 'bodegas' %}">Administrar bodegas</button>
+        </div>
 
         <div class="form-actions span-2">
             <button type="submit" class="primary-button">Guardar producto</button>

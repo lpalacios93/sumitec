@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} | SUMITEC{% endblock %}
+
+{% block content %}
+<section class="picker-shell">
+    <div class="picker-header">
+        <div>
+            <p>Seleccion</p>
+            <h1>{{ title }}</h1>
+        </div>
+        <button type="button" class="secondary-button" onclick="window.close()">Cerrar</button>
+    </div>
+
+    <form method="get" class="picker-search">
+        {% if field_id %}<input type="hidden" name="field_id" value="{{ field_id }}">{% endif %}
+        <input type="search" name="q" value="{{ query }}" placeholder="Buscar por nombre">
+        <button type="submit">Buscar</button>
+    </form>
+
+    <div class="picker-table-wrap">
+        <table class="picker-table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Detalle</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td><strong>{{ item.name }}</strong></td>
+                        <td>
+                            {% if item.description %}{{ item.description|truncatechars:60 }}
+                            {% elif item.location %}{{ item.location|truncatechars:60 }}
+                            {% elif item.email %}{{ item.email }}
+                            {% else %}-{% endif %}
+                        </td>
+                        <td class="row-actions">
+                            {% if field_id %}
+                                <button type="button" onclick="chooseCatalogItem('{{ field_id }}', '{{ item.pk }}', '{{ item.name|escapejs }}')">Elegir</button>
+                            {% endif %}
+                            <a href="?{% if field_id %}field_id={{ field_id }}&{% endif %}edit={{ item.pk }}{% if query %}&q={{ query }}{% endif %}">Modificar</a>
+                            <form method="post" class="inline-delete" onsubmit="return confirm('Eliminar este registro?');">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="item_id" value="{{ item.pk }}">
+                                <button type="submit">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="3" class="empty-state">No hay registros.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <section class="picker-form-panel">
+        <h2>{% if edit_object %}Modificar{% else %}Crear{% endif %}</h2>
+        <form method="post" class="form-grid compact-form" novalidate>
+            {% csrf_token %}
+            <input type="hidden" name="action" value="{% if edit_object %}update{% else %}create{% endif %}">
+            {% if edit_object %}<input type="hidden" name="item_id" value="{{ edit_object.pk }}">{% endif %}
+            {% for field in form %}
+                <label class="{% if field.name == 'description' or field.name == 'address' or field.name == 'notes' %}span-2{% endif %}">
+                    {{ field.label }}
+                    {{ field }}
+                    {{ field.errors }}
+                </label>
+            {% endfor %}
+            <div class="form-actions span-2">
+                <button type="submit" class="primary-button">{% if edit_object %}Guardar cambios{% else %}Crear registro{% endif %}</button>
+                {% if edit_object %}
+                    <a class="secondary-link-button" href="?{% if field_id %}field_id={{ field_id }}{% endif %}">Cancelar modificacion</a>
+                {% endif %}
+            </div>
+        </form>
+    </section>
+</section>
+
+<script>
+function chooseCatalogItem(fieldId, value, label) {
+    if (!window.opener || window.opener.closed) {
+        return;
+    }
+    window.opener.CatalogPicker.select(fieldId, value, label);
+    window.close();
+}
+</script>
+{% endblock %}

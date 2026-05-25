@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}SUMITEC{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/app.css' %}">
+    {% block extra_head %}{% endblock %}
 </head>
 <body>
     <header class="app-header">
@@ -37,5 +38,7 @@
         {% endif %}
         {% block content %}{% endblock %}
     </main>
+    <script src="{% static 'js/catalog_picker.js' %}"></script>
+    {% block extra_scripts %}{% endblock %}
 </body>
 </html>

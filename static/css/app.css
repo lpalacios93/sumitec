@@ -167,6 +167,17 @@ input {
     font-weight: 700;
 }
 
+.secondary-button {
+    min-height: 40px;
+    padding: 9px 14px;
+    color: var(--primary);
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
 .primary-button:hover {
     background: var(--primary-dark);
 }
@@ -397,17 +408,123 @@ input {
     margin-top: 8px;
 }
 
-.form-section-title {
-    margin: 12px 0 0;
-    padding-top: 18px;
-    border-top: 1px solid var(--line);
+.select-with-action {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+}
+
+.select-with-action button,
+.inline-management button,
+.picker-search button,
+.picker-table button {
+    min-height: 38px;
+    padding: 8px 12px;
+    color: var(--primary);
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.inline-management {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px;
+    background: var(--surface-muted);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+}
+
+.inline-management span {
+    color: var(--muted);
+    font-weight: 700;
+}
+
+.picker-shell {
+    display: grid;
+    gap: 14px;
+}
+
+.picker-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.picker-header p {
+    margin: 0 0 4px;
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.picker-header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.picker-search {
+    display: flex;
+    gap: 8px;
+}
+
+.picker-search input {
+    flex: 1;
+    min-height: 38px;
+    padding: 8px 10px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+}
+
+.picker-table-wrap,
+.picker-form-panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.picker-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.picker-table th,
+.picker-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    vertical-align: middle;
+}
+
+.picker-table th {
+    color: var(--muted);
+    background: var(--surface-muted);
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.inline-delete {
+    display: inline;
+}
+
+.picker-form-panel {
+    padding: 16px;
+}
+
+.picker-form-panel h2 {
+    margin: 0 0 14px;
     font-size: 18px;
 }
 
-.form-section-title:first-of-type {
-    margin-top: 0;
-    padding-top: 0;
-    border-top: 0;
+.compact-form {
+    gap: 12px;
 }
 
 .role-pill {
@@ -461,9 +578,15 @@ input {
 
     .search-form,
     .form-actions,
-    .button-row {
+    .button-row,
+    .picker-search,
+    .inline-management {
         align-items: stretch;
         flex-direction: column;
+    }
+
+    .select-with-action {
+        grid-template-columns: 1fr;
     }
 
     .form-grid {
