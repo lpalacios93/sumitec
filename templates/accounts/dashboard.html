@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Panel principal | SUMITEC{% endblock %}
+
+{% block content %}
+<section class="dashboard-heading">
+    <div>
+        <p>Panel principal</p>
+        <h1>Operaciones comerciales</h1>
+    </div>
+    <span class="role-pill">
+        {% if is_admin %}Administrador{% else %}Vendedor{% endif %}
+    </span>
+</section>
+
+<section class="module-grid">
+    <article class="module-card">
+        <h2>Proformas</h2>
+        <p>Crear, duplicar, modificar, imprimir y descargar proformas.</p>
+        <a href="#" aria-disabled="true">Pendiente</a>
+    </article>
+    <article class="module-card">
+        <h2>Clientes</h2>
+        <p>Registrar clientes y consultar su historial comercial.</p>
+        <a href="#" aria-disabled="true">Pendiente</a>
+    </article>
+    <article class="module-card">
+        <h2>Productos</h2>
+        <p>Consultar catálogo, precios de venta y stock informativo.</p>
+        <a href="#" aria-disabled="true">Pendiente</a>
+    </article>
+    <article class="module-card">
+        <h2>Compatibilidades</h2>
+        <p>Buscar tintas, tóneres, cargadores y baterías compatibles.</p>
+        <a href="#" aria-disabled="true">Pendiente</a>
+    </article>
+
+    {% if is_admin %}
+        <article class="module-card">
+            <h2>Importación Excel</h2>
+            <p>Cargar productos masivamente y validar datos antes de guardar.</p>
+            <a href="#" aria-disabled="true">Pendiente</a>
+        </article>
+        <article class="module-card">
+            <h2>Reportes</h2>
+            <p>Ver proformas por fecha, vendedor y montos totales.</p>
+            <a href="#" aria-disabled="true">Pendiente</a>
+        </article>
+        <article class="module-card">
+            <h2>Respaldos</h2>
+            <p>Crear, descargar y restaurar respaldos de la base de datos.</p>
+            <a href="#" aria-disabled="true">Pendiente</a>
+        </article>
+        <article class="module-card">
+            <h2>Administración</h2>
+            <p>Gestionar usuarios, categorías, marcas, proveedores y bodegas.</p>
+            <a href="/admin/">Abrir administración</a>
+        </article>
+    {% endif %}
+</section>
+{% endblock %}

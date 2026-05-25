@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Ingresar | SUMITEC{% endblock %}
+
+{% block content %}
+<section class="auth-layout">
+    <div class="auth-panel">
+        <div class="section-heading">
+            <p>Acceso interno</p>
+            <h1>Ingresar a SUMITEC</h1>
+        </div>
+
+        {% if form.non_field_errors %}
+            <div class="form-errors">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        <form method="post" class="form-stack" novalidate>
+            {% csrf_token %}
+            <label>
+                {{ form.username.label }}
+                {{ form.username }}
+                {{ form.username.errors }}
+            </label>
+            <label>
+                {{ form.password.label }}
+                {{ form.password }}
+                {{ form.password.errors }}
+            </label>
+            <button type="submit" class="primary-button">Ingresar</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

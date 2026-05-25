@@ -1,0 +1,41 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}SUMITEC{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+</head>
+<body>
+    <header class="app-header">
+        <a class="brand" href="{% url 'dashboard' %}">
+            <span class="brand-mark">S</span>
+            <span>
+                <strong>SUMITEC</strong>
+                <small>Sistema comercial</small>
+            </span>
+        </a>
+        {% if user.is_authenticated %}
+            <nav class="top-nav">
+                <span>{{ user.get_full_name|default:user.username }}</span>
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="link-button">Salir</button>
+                </form>
+            </nav>
+        {% endif %}
+    </header>
+
+    <main class="page-shell">
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="message {{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
