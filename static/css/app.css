@@ -397,6 +397,19 @@ input {
     margin-top: 8px;
 }
 
+.form-section-title {
+    margin: 12px 0 0;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    font-size: 18px;
+}
+
+.form-section-title:first-of-type {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+}
+
 .role-pill {
     padding: 8px 12px;
     color: var(--primary-dark);

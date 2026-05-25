@@ -14,13 +14,110 @@
 <section class="form-panel">
     <form method="post" enctype="multipart/form-data" class="form-grid" novalidate>
         {% csrf_token %}
-        {% for field in form %}
-            <label class="{% if field.name == 'description' or field.name == 'notes' %}span-2{% endif %}">
-                {{ field.label }}
-                {{ field }}
-                {{ field.errors }}
-            </label>
-        {% endfor %}
+
+        <h2 class="form-section-title span-2">Datos del producto</h2>
+        <label>
+            {{ form.code.label }}
+            {{ form.code }}
+            {{ form.code.errors }}
+        </label>
+        <label>
+            {{ form.barcode.label }}
+            {{ form.barcode }}
+            {{ form.barcode.errors }}
+        </label>
+        <label class="span-2">
+            {{ form.description.label }}
+            {{ form.description }}
+            {{ form.description.errors }}
+        </label>
+        <label>
+            {{ form.brand.label }}
+            {{ form.brand }}
+            {{ form.brand.errors }}
+        </label>
+        <label>
+            {{ form.model.label }}
+            {{ form.model }}
+            {{ form.model.errors }}
+        </label>
+        <label>
+            {{ form.category.label }}
+            {{ form.category }}
+            {{ form.category.errors }}
+        </label>
+        <label>
+            {{ form.supplier.label }}
+            {{ form.supplier }}
+            {{ form.supplier.errors }}
+        </label>
+        <label>
+            {{ form.cost_price.label }}
+            {{ form.cost_price }}
+            {{ form.cost_price.errors }}
+        </label>
+        <label>
+            {{ form.sale_price.label }}
+            {{ form.sale_price }}
+            {{ form.sale_price.errors }}
+        </label>
+        <label>
+            {{ form.applies_iva.label }}
+            {{ form.applies_iva }}
+            {{ form.applies_iva.errors }}
+        </label>
+        <label>
+            {{ form.is_active.label }}
+            {{ form.is_active }}
+            {{ form.is_active.errors }}
+        </label>
+        <label>
+            {{ form.warranty.label }}
+            {{ form.warranty }}
+            {{ form.warranty.errors }}
+        </label>
+        <label>
+            {{ form.image.label }}
+            {{ form.image }}
+            {{ form.image.errors }}
+        </label>
+        <label class="span-2">
+            {{ form.notes.label }}
+            {{ form.notes }}
+            {{ form.notes.errors }}
+        </label>
+
+        <h2 class="form-section-title span-2">Crear datos auxiliares sin salir</h2>
+        <label>
+            {{ form.new_category_name.label }}
+            {{ form.new_category_name }}
+            <small>{{ form.new_category_name.help_text }}</small>
+            {{ form.new_category_name.errors }}
+        </label>
+        <label>
+            {{ form.new_brand_name.label }}
+            {{ form.new_brand_name }}
+            <small>{{ form.new_brand_name.help_text }}</small>
+            {{ form.new_brand_name.errors }}
+        </label>
+        <label>
+            {{ form.new_supplier_name.label }}
+            {{ form.new_supplier_name }}
+            <small>{{ form.new_supplier_name.help_text }}</small>
+            {{ form.new_supplier_name.errors }}
+        </label>
+        <label>
+            {{ form.new_warehouse_name.label }}
+            {{ form.new_warehouse_name }}
+            <small>{{ form.new_warehouse_name.help_text }}</small>
+            {{ form.new_warehouse_name.errors }}
+        </label>
+        <label class="span-2">
+            {{ form.new_warehouse_location.label }}
+            {{ form.new_warehouse_location }}
+            {{ form.new_warehouse_location.errors }}
+        </label>
+
         <div class="form-actions span-2">
             <button type="submit" class="primary-button">Guardar producto</button>
             <a class="secondary-link-button" href="{% url 'catalog:products' %}">Cancelar</a>
