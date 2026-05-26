@@ -59,8 +59,8 @@
                         </td>
                         <td>{{ product.brand|default:"-" }}{% if product.model %}<small>{{ product.model }}</small>{% endif %}</td>
                         <td>{{ product.category }}</td>
-                        {% if is_admin %}<td>C$ {{ product.cost_price }}</td>{% endif %}
-                        <td>C$ {{ product.sale_price }}</td>
+                        {% if is_admin %}<td class="money-cell">C$ {{ product.cost_price }}</td>{% endif %}
+                        <td class="money-cell">C$ {{ product.sale_price }}</td>
                         <td>{% if product.applies_iva %}Si{% else %}No{% endif %}</td>
                         <td>{{ product.stock_total_value|default:"0" }}</td>
                         <td>{% if product.is_active %}Activo{% else %}Inactivo{% endif %}</td>

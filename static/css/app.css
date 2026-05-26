@@ -346,6 +346,11 @@ input {
     min-width: 1080px;
 }
 
+.money-cell {
+    white-space: nowrap;
+    min-width: 96px;
+}
+
 .muted-text {
     color: var(--muted);
 }
