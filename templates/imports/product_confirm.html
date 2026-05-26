@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Vista previa de importacion | SUMITEC{% endblock %}
+
+{% block content %}
+<section class="page-heading">
+    <div>
+        <p>Importacion Excel</p>
+        <h1>Vista previa</h1>
+    </div>
+    <a class="secondary-link-button" href="{% url 'imports:products' %}">Subir otro archivo</a>
+</section>
+
+{% if preview.general_errors %}
+    <section class="message error">
+        {% for error in preview.general_errors %}
+            <p>{{ error }}</p>
+        {% endfor %}
+    </section>
+{% endif %}
+
+<section class="table-panel">
+    <div class="table-scroll">
+        <table class="data-table import-table">
+            <thead>
+                <tr>
+                    <th class="import-row-cell">Fila</th>
+                    <th class="import-code-cell">Codigo</th>
+                    <th>Descripcion</th>
+                    <th>Categoria</th>
+                    <th class="import-money-cell">Costo</th>
+                    <th class="import-money-cell">Precio</th>
+                    <th>Accion</th>
+                    <th>Validacion</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in preview.rows %}
+                    <tr class="{% if row.errors %}row-error{% elif row.warnings %}row-warning{% endif %}">
+                        <td class="import-row-cell">{{ row.display_row }}</td>
+                        <td class="import-code-cell"><strong>{{ row.code|default:"-" }}</strong></td>
+                        <td>{{ row.description|default:"-" }}</td>
+                        <td>{{ row.category|default:"-" }}</td>
+                        <td class="import-money-cell">C$ {{ row.cost|default:"-" }}</td>
+                        <td class="import-money-cell">C$ {{ row.price|default:"-" }}</td>
+                        <td>{% if row.exists %}Duplicado{% else %}Crear{% endif %}</td>
+                        <td>
+                            {% if row.errors %}
+                                {% for error in row.errors %}<small class="text-danger">{{ error }}</small>{% endfor %}
+                            {% elif row.warnings %}
+                                {% for warning in row.warnings %}<small class="text-warning">{{ warning }}</small>{% endfor %}
+                            {% else %}
+                                OK
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="8" class="empty-state">No hay filas para importar.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section class="form-panel import-confirm-panel">
+    <form method="post" class="form-stack">
+        {% csrf_token %}
+        <div class="import-summary">
+            <div>
+                <span class="summary-number">{{ preview.rows|length }}</span>
+                <span class="summary-label">filas listas para revisar</span>
+            </div>
+            <p>Si el archivo contiene codigos que ya existen en el sistema, elige como quieres tratarlos antes de guardar definitivamente.</p>
+        </div>
+
+        <fieldset class="duplicate-options">
+            <legend>Productos con codigo existente</legend>
+            <label class="option-card">
+                <input type="radio" name="duplicate_action" value="update" checked>
+                <span>
+                    <strong>Actualizar existentes</strong>
+                    <small>Reemplaza descripcion, categoria, precios, IVA, garantia, proveedor y stock usando los datos del Excel.</small>
+                </span>
+            </label>
+            <label class="option-card">
+                <input type="radio" name="duplicate_action" value="ignore">
+                <span>
+                    <strong>Ignorar duplicados</strong>
+                    <small>No cambia productos que ya existen. Solo crea los codigos nuevos del archivo.</small>
+                </span>
+            </label>
+            {{ form.duplicate_action.errors }}
+        </fieldset>
+
+        {% if preview.has_errors %}
+            <p class="text-danger">Hay errores en el archivo. Corrige el Excel y vuelve a subirlo.</p>
+            <button type="submit" class="primary-button" disabled>Importar productos</button>
+        {% else %}
+            <button type="submit" class="primary-button">Importar productos</button>
+        {% endif %}
+    </form>
+</section>
+{% endblock %}
