@@ -343,12 +343,63 @@ input {
 }
 
 .product-table {
-    min-width: 1080px;
+    min-width: 0;
+    table-layout: fixed;
 }
 
 .money-cell {
     white-space: nowrap;
-    min-width: 96px;
+}
+
+.product-table th,
+.product-table td {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.product-table .code-cell {
+    width: 9%;
+}
+
+.product-table .description-cell {
+    width: 21%;
+}
+
+.product-table .brand-cell {
+    width: 10%;
+}
+
+.product-table .category-cell {
+    width: 10%;
+}
+
+.product-table .money-header,
+.product-table .money-cell {
+    width: 8%;
+}
+
+.product-table .money-header {
+    white-space: normal;
+}
+
+.product-table .short-cell {
+    width: 5.5%;
+    white-space: nowrap;
+}
+
+.product-table .status-cell {
+    width: 8%;
+    white-space: nowrap;
+}
+
+.product-table .actions-cell {
+    width: 15.5%;
+    white-space: nowrap;
+}
+
+.product-table th,
+.product-table td {
+    overflow-wrap: break-word;
 }
 
 .muted-text {

@@ -34,38 +34,38 @@
         <table class="data-table product-table">
             <thead>
                 <tr>
-                    <th>Codigo</th>
-                    <th>Descripcion</th>
-                    <th>Marca / Modelo</th>
-                    <th>Categoria</th>
-                    {% if is_admin %}<th>Costo</th>{% endif %}
-                    <th>Precio venta</th>
-                    <th>IVA</th>
-                    <th>Stock</th>
-                    <th>Estado</th>
-                    {% if is_admin %}<th></th>{% endif %}
+                    <th class="code-cell">Codigo</th>
+                    <th class="description-cell">Descripcion</th>
+                    <th class="brand-cell">Marca / Modelo</th>
+                    <th class="category-cell">Categoria</th>
+                    {% if is_admin %}<th class="money-header">Costo</th>{% endif %}
+                    <th class="money-header">Precio venta</th>
+                    <th class="short-cell">IVA</th>
+                    <th class="short-cell">Stock</th>
+                    <th class="status-cell">Estado</th>
+                    {% if is_admin %}<th class="actions-cell"></th>{% endif %}
                 </tr>
             </thead>
             <tbody>
                 {% for product in products %}
                     <tr>
-                        <td>
+                        <td class="code-cell">
                             <strong>{{ product.code }}</strong>
                             {% if product.barcode %}<small>{{ product.barcode }}</small>{% endif %}
                         </td>
-                        <td>
+                        <td class="description-cell">
                             {{ product.description }}
                             {% if product.warranty %}<small>Garantia: {{ product.warranty }}</small>{% endif %}
                         </td>
-                        <td>{{ product.brand|default:"-" }}{% if product.model %}<small>{{ product.model }}</small>{% endif %}</td>
-                        <td>{{ product.category }}</td>
+                        <td class="brand-cell">{{ product.brand|default:"-" }}{% if product.model %}<small>{{ product.model }}</small>{% endif %}</td>
+                        <td class="category-cell">{{ product.category }}</td>
                         {% if is_admin %}<td class="money-cell">C$ {{ product.cost_price }}</td>{% endif %}
                         <td class="money-cell">C$ {{ product.sale_price }}</td>
-                        <td>{% if product.applies_iva %}Si{% else %}No{% endif %}</td>
-                        <td>{{ product.stock_total_value|default:"0" }}</td>
-                        <td>{% if product.is_active %}Activo{% else %}Inactivo{% endif %}</td>
+                        <td class="short-cell">{% if product.applies_iva %}Si{% else %}No{% endif %}</td>
+                        <td class="short-cell">{{ product.stock_total_value|default:"0" }}</td>
+                        <td class="status-cell">{% if product.is_active %}Activo{% else %}Inactivo{% endif %}</td>
                         {% if is_admin %}
-                            <td class="row-actions">
+                            <td class="row-actions actions-cell">
                                 <a href="{% url 'catalog:product_update' product.pk %}">Editar</a>
                                 <a href="{% url 'catalog:product_stock' product.pk %}">Stock</a>
                             </td>
